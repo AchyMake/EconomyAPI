@@ -1,4 +1,4 @@
-JitPack.io Check Repository = https://jitpack.io/#AchyMake/EssentialsA
+JitPack.io Check Repository = https://jitpack.io/#AchyMake/EconomyAPI
 ```xml
 <repositories>
     <repository>
