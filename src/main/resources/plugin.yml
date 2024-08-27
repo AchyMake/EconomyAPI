@@ -4,6 +4,20 @@ main: org.achymake.economyapi.EconomyAPI
 api-version: '1.21'
 prefix: '${project.name}'
 load: STARTUP
-softdepend: [PlaceholderAPI]
+depend: [PlaceholderAPI]
 author: AchyMake
 description: '${project.description}'
+commands:
+  economyapi:
+    description: main command
+    permission: economyapi.command.economyapi
+    aliases:
+      - ecoapi
+    permission-message: You do not have the permissions to execute the command
+permissions:
+  economyapi.command.economyapi:
+    description: main command
+    default: op
+  economyapi.event.join.update:
+    description: main command
+    default: op

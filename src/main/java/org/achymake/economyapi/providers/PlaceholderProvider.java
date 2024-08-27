@@ -38,13 +38,24 @@ public class PlaceholderProvider extends PlaceholderExpansion {
             return "";
         } else {
             var ecoAPI = EconomyAPI.getInstance();
-            var ecoProvider = ecoAPI.getEconomy();
-            var eco = ecoProvider.get(player);
-            var currency = ecoProvider.currency();
-            var result = currency + ecoProvider.format(eco);
+            var eco = ecoAPI.getServer().getServicesManager().getRegistration(EconomyProvider.class).getProvider();
+            var account = eco.get(player);
+            var result = eco.currency() + eco.format(account);
+            String accountString = eco.format(account);
             switch (params) {
                 case "account" -> {
                     return result;
+                }
+                case "account_formatted" -> {
+                    if (account < 1000.00) {
+                        return result;
+                    } else if (account < 1000000.00) {
+                        var resultFormatted = accountString.substring(0, accountString.length() - 4);
+                        return eco.currency() + resultFormatted + "K";
+                    } else if (account >= 1000000.00) {
+                        var resultFormatted = accountString.substring(0, accountString.length() - 8);
+                        return eco.currency() + resultFormatted + "M";
+                    }
                 }
             }
         }
