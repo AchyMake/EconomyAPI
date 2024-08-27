@@ -8,9 +8,9 @@ public interface EconomyProvider {
     public String format(double value);
     public String currency();
     public boolean exists(OfflinePlayer offlinePlayer);
-    public boolean create(OfflinePlayer offlinePlayer);
+    public void create(OfflinePlayer offlinePlayer);
     public double get(OfflinePlayer offlinePlayer);
     public boolean has(OfflinePlayer offlinePlayer, double amount);
-    public boolean add(OfflinePlayer offlinePlayer, double amount);
-    public boolean remove(OfflinePlayer offlinePlayer, double amount);
+    public void add(OfflinePlayer offlinePlayer, double amount);
+    public void remove(OfflinePlayer offlinePlayer, double amount);
 }
