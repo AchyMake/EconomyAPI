@@ -1,0 +1,9 @@
+name: EconomyAPI
+version: '${project.version}'
+main: org.achymake.economyapi.EconomyAPI
+api-version: '1.21'
+prefix: '${project.name}'
+load: STARTUP
+softdepend: [PlaceholderAPI]
+author: AchyMake
+description: '${project.description}'
