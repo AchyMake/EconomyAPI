@@ -23,8 +23,8 @@ public final class EconomyAPI extends JavaPlugin {
         message = new Message();
         scheduleHandler = new ScheduleHandler();
         updateChecker = new UpdateChecker();
-        commands();
-        events();
+        new EconomyAPICommand();
+        new PlayerJoin();
         reload();
         new PlaceholderProvider().register();
         getLogger().log(Level.INFO, "Enabled for " + getMinecraftProvider() + " " + getMinecraftVersion());
@@ -32,12 +32,7 @@ public final class EconomyAPI extends JavaPlugin {
     @Override
     public void onDisable() {
         new PlaceholderProvider().unregister();
-    }
-    private void commands() {
-        new EconomyAPICommand();
-    }
-    private void events() {
-        new PlayerJoin();
+        getScheduleHandler().cancelAll();
     }
     public void reload() {
         var file = new File(getDataFolder(), "config.yml");

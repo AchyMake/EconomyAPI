@@ -38,23 +38,27 @@ public class PlaceholderProvider extends PlaceholderExpansion {
             return "";
         } else {
             var ecoAPI = EconomyAPI.getInstance();
-            var eco = ecoAPI.getServer().getServicesManager().getRegistration(EconomyProvider.class).getProvider();
-            var account = eco.get(player);
-            var result = eco.currency() + eco.format(account);
-            String accountString = eco.format(account);
-            switch (params) {
-                case "account" -> {
-                    return result;
-                }
-                case "account_formatted" -> {
-                    if (account < 1000.00) {
-                        return result;
-                    } else if (account < 1000000.00) {
-                        var resultFormatted = accountString.substring(0, accountString.length() - 4);
-                        return eco.currency() + resultFormatted + "K";
-                    } else if (account >= 1000000.00) {
-                        var resultFormatted = accountString.substring(0, accountString.length() - 8);
-                        return eco.currency() + resultFormatted + "M";
+            var ecoProvider = ecoAPI.getServer().getServicesManager().getRegistration(EconomyProvider.class);
+            if (ecoProvider != null) {
+                var eco = ecoProvider.getProvider();
+                var account = eco.get(player);
+                var result = eco.format(account);
+                switch (params) {
+                    case "account" -> {
+                        return eco.currency() + result;
+                    }
+                    case "account_formatted" -> {
+                        if (account < 1000.00) {
+                            return eco.currency() + result;
+                        } else if (account < 1000000.00) {
+                            return eco.currency() + result.substring(0, result.length() - 4) + "K";
+                        } else if (account < 1000000000.00) {
+                            return eco.currency() + result.substring(0, result.length() - 8) + "M";
+                        } else if (account < 1000000000000.00) {
+                            return eco.currency() + result.substring(0, result.length() - 12) + "B";
+                        } else if (account >= 1000000000000.00) {
+                            return eco.currency() + result.substring(0, result.length() - 16) + "T";
+                        }
                     }
                 }
             }

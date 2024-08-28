@@ -25,12 +25,20 @@ public class EconomyAPICommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
-            getMessage().send(sender, "&6" + getEconomyAPI().name() + " " + getEconomyAPI().version());
+            var ecoAPI = getEconomyAPI();
+            var ecoProvider = ecoAPI.getServer().getServicesManager().getRegistration(EconomyProvider.class);
+            getMessage().send(sender, getEconomyAPI().name() + " " + getEconomyAPI().version());
+            if (ecoProvider != null) {
+                var eco = ecoProvider.getProvider();
+                getMessage().send(sender, "Economy: " + eco.getName());
+            } else {
+                getMessage().send(sender, "Economy: null");
+            }
             return true;
         } else if (args.length == 1) {
             if (args[0].equalsIgnoreCase("reload")) {
                 getEconomyAPI().reload();
-                getMessage().send(sender, "&6EconomyAPI:&f reloaded");
+                getMessage().send(sender, "EconomyAPI: reloaded");
                 return true;
             } else {
                 return false;
@@ -40,18 +48,18 @@ public class EconomyAPICommand implements CommandExecutor, TabCompleter {
                 var eco1 = args[1];
                 var eco2 = args[2];
                 Collection<RegisteredServiceProvider<EconomyProvider>> economies = getEconomyAPI().getServer().getServicesManager().getRegistrations(EconomyProvider.class);
-                if (economies == null || economies.size() < 2) {
+                if (economies.size() < 2) {
                     getMessage().send(sender, "could not find more economy providers");
                 } else {
                     EconomyProvider provider1 = null;
                     EconomyProvider provider2 = null;
-                    for (var econs : economies) {
-                        var names = econs.getProvider().getName();
+                    for (var econ : economies) {
+                        var names = econ.getProvider().getName();
                         if (names.equalsIgnoreCase(eco1)) {
-                            provider1 = econs.getProvider();
+                            provider1 = econ.getProvider();
                         }
                         if (names.equalsIgnoreCase(eco2)) {
-                            provider2 = econs.getProvider();
+                            provider2 = econ.getProvider();
                         }
                     }
                     if (provider1 != null || provider2 != null) {
@@ -70,6 +78,8 @@ public class EconomyAPICommand implements CommandExecutor, TabCompleter {
                                 }
                             }
                         }
+                        getMessage().send(sender, "Economy has been converted");
+                        getMessage().send(sender, "before uninstall the old one please check to be sure");
                     }
                 }
                 return true;

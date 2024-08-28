@@ -32,7 +32,7 @@ public class UpdateChecker {
                             }
                         });
                     }
-                }, 5);
+                }, 8);
             }
         }
     }
