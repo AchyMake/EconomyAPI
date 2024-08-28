@@ -39,7 +39,9 @@ public class PlaceholderProvider extends PlaceholderExpansion {
         } else {
             var ecoAPI = EconomyAPI.getInstance();
             var ecoProvider = ecoAPI.getServer().getServicesManager().getRegistration(EconomyProvider.class);
-            if (ecoProvider != null) {
+            if (ecoProvider == null) {
+                return "null";
+            } else {
                 var eco = ecoProvider.getProvider();
                 var account = eco.get(player);
                 var result = eco.format(account);
