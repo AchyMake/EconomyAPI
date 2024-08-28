@@ -4,7 +4,8 @@ main: org.achymake.economyapi.EconomyAPI
 api-version: '1.21'
 prefix: '${project.name}'
 load: STARTUP
-depend: [PlaceholderAPI]
+depend:
+  - PlaceholderAPI
 author: AchyMake
 description: '${project.description}'
 commands:
