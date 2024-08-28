@@ -12,9 +12,9 @@ commands:
   economyapi:
     description: main command
     permission: economyapi.command.economyapi
+    permission-message: You do not have the permissions to execute the command
     aliases:
       - ecoapi
-    permission-message: You do not have the permissions to execute the command
 permissions:
   economyapi.command.economyapi:
     description: main command
