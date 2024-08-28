@@ -1,6 +1,7 @@
 package org.achymake.economyapi;
 
 import org.achymake.economyapi.commands.EconomyAPICommand;
+import org.achymake.economyapi.handlers.RegistrationHandler;
 import org.achymake.economyapi.handlers.ScheduleHandler;
 import org.achymake.economyapi.listeners.PlayerJoin;
 import org.achymake.economyapi.providers.PlaceholderProvider;
@@ -17,12 +18,14 @@ public final class EconomyAPI extends JavaPlugin {
     private static Message message;
     private static ScheduleHandler scheduleHandler;
     private static UpdateChecker updateChecker;
+    private static RegistrationHandler registrationHandler;
     @Override
     public void onEnable() {
         instance = this;
         message = new Message();
         scheduleHandler = new ScheduleHandler();
         updateChecker = new UpdateChecker();
+        registrationHandler = new RegistrationHandler();
         new EconomyAPICommand();
         new PlayerJoin();
         reload();
@@ -53,6 +56,9 @@ public final class EconomyAPI extends JavaPlugin {
     }
     public PluginManager getManager() {
         return getServer().getPluginManager();
+    }
+    public RegistrationHandler getRegistrationHandler() {
+        return registrationHandler;
     }
     public ScheduleHandler getScheduleHandler() {
         return scheduleHandler;

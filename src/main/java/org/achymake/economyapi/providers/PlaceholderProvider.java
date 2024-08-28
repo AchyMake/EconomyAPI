@@ -38,31 +38,25 @@ public class PlaceholderProvider extends PlaceholderExpansion {
             return "";
         } else {
             var ecoAPI = EconomyAPI.getInstance();
-            var ecoProvider = ecoAPI.getServer().getServicesManager().getRegistration(EconomyProvider.class);
-            if (ecoProvider == null) {
-                return "null";
-            } else {
-                var eco = ecoProvider.getProvider();
-                var account = eco.get(player);
-                var result = eco.format(account);
+            if (ecoAPI.getRegistrationHandler().isEnable()) {
                 switch (params) {
                     case "account" -> {
-                        return eco.currency() + result;
+                        if (ecoAPI.getConfig().getBoolean("reverse")) {
+                            return ecoAPI.getRegistrationHandler().getDefaultReversed(player);
+                        } else {
+                            return ecoAPI.getRegistrationHandler().getDefault(player);
+                        }
                     }
                     case "account_formatted" -> {
-                        if (account < 1000.00) {
-                            return eco.currency() + result;
-                        } else if (account < 1000000.00) {
-                            return eco.currency() + result.substring(0, result.length() - 4) + "K";
-                        } else if (account < 1000000000.00) {
-                            return eco.currency() + result.substring(0, result.length() - 8) + "M";
-                        } else if (account < 1000000000000.00) {
-                            return eco.currency() + result.substring(0, result.length() - 12) + "B";
-                        } else if (account >= 1000000000000.00) {
-                            return eco.currency() + result.substring(0, result.length() - 16) + "T";
+                        if (ecoAPI.getConfig().getBoolean("reverse")) {
+                            return ecoAPI.getRegistrationHandler().getFormattedReversed(player);
+                        } else {
+                            return ecoAPI.getRegistrationHandler().getFormatted(player);
                         }
                     }
                 }
+            } else {
+                return "null";
             }
         }
         return super.onPlaceholderRequest(player, params);

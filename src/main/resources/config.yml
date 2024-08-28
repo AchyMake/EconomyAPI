@@ -1,1 +1,6 @@
 notify-update: true
+# if reverse: true
+# %economy_account% = {account} {currency}
+# if reverse: false
+# %economy_account% = {currency} {account}
+reverse: false
