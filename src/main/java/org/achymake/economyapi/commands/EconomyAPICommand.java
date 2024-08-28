@@ -58,13 +58,21 @@ public class EconomyAPICommand implements CommandExecutor, TabCompleter {
                             getMessage().send(sender, "Trying to convert");
                             getMessage().send(sender, "it might lag depending how many players has joined");
                             for (OfflinePlayer offlinePlayer : getEconomyAPI().getServer().getOfflinePlayers()) {
-                                if (provider1.exists(offlinePlayer) || provider2.exists(offlinePlayer)) {
+                                if (provider1.exists(offlinePlayer)) {
                                     provider2.create(offlinePlayer);
                                     var result = provider1.get(offlinePlayer) - provider2.get(offlinePlayer);
                                     if (result > 0) {
                                         provider2.add(offlinePlayer, result);
                                     } else if (result < 0) {
                                         provider2.remove(offlinePlayer, -result);
+                                    }
+                                    if (provider1.supportsBank() && provider2.supportsBank()) {
+                                        var bankResult = provider1.getBank(offlinePlayer) - provider2.getBank(offlinePlayer);
+                                        if (result > 0) {
+                                            provider2.addBank(offlinePlayer, bankResult);
+                                        } else if (result < 0) {
+                                            provider2.removeBank(offlinePlayer, -bankResult);
+                                        }
                                     }
                                 }
                             }

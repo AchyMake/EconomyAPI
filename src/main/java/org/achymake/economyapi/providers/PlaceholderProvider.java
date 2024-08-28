@@ -54,6 +54,20 @@ public class PlaceholderProvider extends PlaceholderExpansion {
                             return ecoAPI.getRegistrationHandler().getFormatted(player);
                         }
                     }
+                    case "bank" -> {
+                        if (ecoAPI.getConfig().getBoolean("reverse")) {
+                            return ecoAPI.getRegistrationHandler().getDefaultBankReversed(player);
+                        } else {
+                            return ecoAPI.getRegistrationHandler().getDefaultBank(player);
+                        }
+                    }
+                    case "bank_formatted" -> {
+                        if (ecoAPI.getConfig().getBoolean("reverse")) {
+                            return ecoAPI.getRegistrationHandler().getFormattedBankReversed(player);
+                        } else {
+                            return ecoAPI.getRegistrationHandler().getFormattedBank(player);
+                        }
+                    }
                 }
             } else {
                 return "null";
