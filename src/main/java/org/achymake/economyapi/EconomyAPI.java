@@ -4,13 +4,18 @@ import org.achymake.economyapi.commands.EconomyAPICommand;
 import org.achymake.economyapi.handlers.RegistrationHandler;
 import org.achymake.economyapi.handlers.ScheduleHandler;
 import org.achymake.economyapi.listeners.PlayerJoin;
+import org.achymake.economyapi.listeners.ServiceRegister;
+import org.achymake.economyapi.providers.EconomyProvider;
 import org.achymake.economyapi.providers.PlaceholderProvider;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 
 public final class EconomyAPI extends JavaPlugin {
@@ -19,6 +24,7 @@ public final class EconomyAPI extends JavaPlugin {
     private static ScheduleHandler scheduleHandler;
     private static UpdateChecker updateChecker;
     private static RegistrationHandler registrationHandler;
+    private final Map<Plugin, EconomyProvider> rsp = new HashMap<>();
     @Override
     public void onEnable() {
         instance = this;
@@ -28,6 +34,7 @@ public final class EconomyAPI extends JavaPlugin {
         registrationHandler = new RegistrationHandler();
         new EconomyAPICommand();
         new PlayerJoin();
+        new ServiceRegister();
         reload();
         new PlaceholderProvider().register();
         getLogger().log(Level.INFO, "Enabled for " + getMinecraftProvider() + " " + getMinecraftVersion());
@@ -36,6 +43,9 @@ public final class EconomyAPI extends JavaPlugin {
     public void onDisable() {
         new PlaceholderProvider().unregister();
         getScheduleHandler().cancelAll();
+        if (!getEconomyProviders().isEmpty()) {
+            getEconomyProviders().clear();
+        }
     }
     public void reload() {
         var file = new File(getDataFolder(), "config.yml");
@@ -54,8 +64,18 @@ public final class EconomyAPI extends JavaPlugin {
             }
         }
     }
+    public Plugin getPlugin(String pluginName) {
+        if (getManager().isPluginEnabled(pluginName)) {
+            return getManager().getPlugin(pluginName);
+        } else {
+            return null;
+        }
+    }
     public PluginManager getManager() {
         return getServer().getPluginManager();
+    }
+    public Map<Plugin, EconomyProvider> getEconomyProviders() {
+        return rsp;
     }
     public RegistrationHandler getRegistrationHandler() {
         return registrationHandler;

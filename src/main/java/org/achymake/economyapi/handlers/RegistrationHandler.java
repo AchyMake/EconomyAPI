@@ -3,6 +3,7 @@ package org.achymake.economyapi.handlers;
 import org.achymake.economyapi.EconomyAPI;
 import org.achymake.economyapi.providers.EconomyProvider;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.text.DecimalFormat;
@@ -12,7 +13,11 @@ public class RegistrationHandler {
         return EconomyAPI.getInstance().getServer().getServicesManager().getRegistration(EconomyProvider.class);
     }
     public boolean isEnable() {
-        return getRegistration() != null;
+        if (getRegistration() != null) {
+            return getRegistration().getProvider().isEnable();
+        } else {
+            return false;
+        }
     }
     public String getDefault(Player player) {
         if (isEnable()) {
@@ -77,5 +82,8 @@ public class RegistrationHandler {
         } else {
             return "";
         }
+    }
+    public void convert(Plugin from, Plugin to) {
+
     }
 }
